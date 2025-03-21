@@ -131,6 +131,7 @@
                         <p>Precio: $${precio}</p>
                         <p>Stock: ${stock}</p>
                         ${imagenHTML}
+                        <button class="btn" onclick="window.history.back()">Volver</button>
                     `;
                 } else {
                     document.getElementById("producto-info").innerHTML = "<p class='error'>Producto no encontrado.</p>";
@@ -141,8 +142,9 @@
 
         // Función para iniciar el escáner
         document.getElementById('start-scan-btn').addEventListener('click', () => {
-            document.getElementById('scanner-container').style.display = 'block';
+            // Ocultar el producto y mostrar el escáner
             document.getElementById('producto-info').style.display = 'none';
+            document.getElementById('scanner-container').style.display = 'block';
 
             const html5QrCode = new Html5Qrcode("reader");
 
@@ -162,6 +164,11 @@
                 }
             );
         });
+
+        // Recarga la página cada 2 minutos (120000 ms)
+        setInterval(function() {
+            location.reload(); // Recarga la página
+        }, 120000); // 120000 ms = 2 minutos
     </script>
 
 </body>
