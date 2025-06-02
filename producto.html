@@ -70,51 +70,47 @@
     </div>
 
     <script>
-        // Obtener el ID del producto desde la URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const idProducto = urlParams.get('id');
+        
+    // Obtener el ID del producto desde la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const idProducto = urlParams.get('id');
 
-        if (!idProducto) {
-            document.getElementById("producto-info").innerHTML = "<p class='error'>Error: No se encontró el ID.</p>";
-        } else {
-            let proxyUrl = "https://api.allorigins.win/get?url=" + encodeURIComponent("https://docs.google.com/spreadsheets/d/1ZUwk2jRWzMs6oybfQVF4BO2SJECRaNJ9d1m6m5W7IRU/gviz/tq?tqx=out:json");
+    if (!idProducto) {
+        document.getElementById("producto-info").innerHTML = "<p class='error'>Error: No se encontró el ID.</p>";
+    } else {
+        let proxyUrl = "https://api.allorigins.win/get?url=" + encodeURIComponent("https://docs.google.com/spreadsheets/d/1KMES9lKkwjCqUf6pqHSXJwS8VwZQm38WFsL3y65vZUI/gviz/tq?tqx=out:json");
 
-            fetch(proxyUrl)
-            .then(response => response.json())
-            .then(data => {
-                let json = JSON.parse(data.contents.substring(47, data.contents.length - 2)); 
-                let filas = json.table.rows;
+        fetch(proxyUrl)
+        .then(response => response.json())
+        .then(data => {
+            let json = JSON.parse(data.contents.substring(47, data.contents.length - 2)); 
+            let filas = json.table.rows;
 
-                let productoEncontrado = filas.find(fila => fila.c[0] && fila.c[0].v == idProducto);
+            let productoEncontrado = filas.find(fila => fila.c[0] && fila.c[0].v == idProducto);
 
-                if (productoEncontrado) {
-                    let columnas = productoEncontrado.c;
-                    let nombre = columnas[1] ? columnas[1].v : "Sin nombre";
-                    let precio = columnas[2] ? columnas[2].v : "Sin precio";
-                    let stock = columnas[3] ? columnas[3].v : "Sin stock disponible";
-                    let imagen = columnas[4] ? columnas[4].v : "https://via.placeholder.com/150";
+            if (productoEncontrado) {
+                let columnas = productoEncontrado.c;
+                let nombre = columnas[1] ? columnas[1].v : "Sin nombre";
+                let caracteristicas = columnas[2] ? columnas[2].v : "Sin características";
+                let cantidad = columnas[3] ? columnas[3].v : "Sin cantidad";
 
-                    let imagenHTML = imagen && imagen.includes("imgur.com") ? 
-                        `<img src="${imagen}" alt="Imagen del producto">` : 
-                        `<img src="https://via.placeholder.com/150" alt="Imagen del producto">`;
+                document.getElementById("producto-info").innerHTML = `
+                    <h2>${nombre}</h2>
+                    <p><strong>Características:</strong> ${caracteristicas}</p>
+                    <p><strong>Cantidad disponible:</strong> ${cantidad}</p>
+                `;
+            } else {
+                document.getElementById("producto-info").innerHTML = "<p class='error'>Producto no encontrado.</p>";
+            }
+        })
+        .catch(error => console.error("Error al cargar los datos:", error));
+    }
 
-                    document.getElementById("producto-info").innerHTML = `
-                        <h2>${nombre}</h2>
-                        <p>Precio: $${precio}</p>
-                        <p>Stock: ${stock}</p>
-                        ${imagenHTML}
-                    `;
-                } else {
-                    document.getElementById("producto-info").innerHTML = "<p class='error'>Producto no encontrado.</p>";
-                }
-            })
-            .catch(error => console.error("Error al cargar los datos:", error));
-        }
+    // Recarga la página cada 2 minutos (120000 ms)
+    setInterval(function() {
+        location.reload(); // Recarga la página
+    }, 120000); // 120000 ms = 2 minutos
 
-        // Recarga la página cada 2 minutos (120000 ms)
-        setInterval(function() {
-            location.reload(); // Recarga la página
-        }, 120000); // 120000 ms = 2 minutos
     </script>
 
 </body>
