@@ -20,8 +20,8 @@
         }
 
         #logo {
-            width: 120px;
-            margin-bottom: 10px;
+        width: 120px; /* Puedes ajustar este valor: 100px, 150px, etc. */
+        margin-bottom: 20px;
         }
 
         h1 {
@@ -103,7 +103,7 @@
                 document.getElementById("producto-info").innerHTML = `
                     <h2>${nombre}</h2>
                     <p><strong>Características:</strong> ${caracteristicas}</p>
-                    <p><strong>Cantidad disponible:</strong> ${cantidad}</p>
+                    <p><strong>Cantidad:</strong> ${cantidad}</p>
                 `;
             } else {
                 document.getElementById("producto-info").innerHTML = "<p class='error'>Producto no encontrado.</p>";
